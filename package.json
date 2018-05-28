@@ -1,0 +1,16 @@
+{
+  "name": "flow_faker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "flow_doc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "change-case": "^3.0.2",
+    "faker": "^4.1.0",
+    "react-docgen": "^2.20.1"
+  }
+}
