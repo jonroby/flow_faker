@@ -21,6 +21,8 @@ function createFakeProps() {
     {}
   );
 
+  console.log("fakeComponentProps ", fakeComponentProps);
+
   //  return flowData;
 }
 
@@ -44,12 +46,36 @@ function createFakeProp(prop) {
         return acc.concat(fakeProp);
       }, []);
 
-    case "object":
+    case "signature":
+      const { properties } = prop.signature;
+      if (prop.type === "object") {
+        return properties.reduce((acc, curr) => {
+          const keyVal = {
+            [curr.key]: createFakeProp(curr.value)
+          };
 
+          return Object.assign({}, acc, keyVal);
+        }, {});
+      } else if (prop.type === "function") {
+        const ret = createFakeProp(prop.signature.return);
+        return () => { return ret };
+      }
+
+      break;
     case "union":
       return prop.elements.map(p => {
         return createFakeProp(p);
       });
+
+    case "literal":
+      // TODO: react-docgen changes true to 'true', 1 to '1', 'hello' to '"hello"'
+
+      if (prop.elements) {
+        return prop.elements.map(p => {
+          return createFakeProp(p);
+        });
+      }
+      return prop.value;
 
     default:
       console.log("No match.");
